@@ -76,4 +76,6 @@ class Product(scrapy.Item):
     otherSelections = scrapy.Field()
     color = scrapy.Field()
     scrappedDate = scrapy.Field()
-    store = scrapy.Field()
+    storeId = scrapy.Field()
+    shelf = scrapy.Field()
+    stock = scrapy.Field()

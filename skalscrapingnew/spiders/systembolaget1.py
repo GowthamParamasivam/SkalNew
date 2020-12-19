@@ -44,6 +44,7 @@ class Systembolaget1Spider(scrapy.Spider):
         for product in products:
             Item = Product()
             Item['productId'] = product.get('productId')
+            productId = product.get('productId')
             Item['productNumber'] = product.get('productNumber')
             Item['productNameBold'] = product.get('productNameBold')
             Item['productNameThin'] = product.get('productNameThin')
@@ -93,9 +94,10 @@ class Systembolaget1Spider(scrapy.Spider):
             Item['isRegionalRestricted'] = product.get('isRegionalRestricted')
             Item['packaging'] = product.get('packaging')
             Item['isNews'] = product.get('isNews')
-            Item['imageUrls'] = [product.get('images')[0]['imageUrl']+'_400.png']
-            # Item['image'] = product.get('images').get('')
-            # Item['image_path'] = product.get('image_paths')
+            try:
+                Item['imageUrls'] = [product.get('images')[0]['imageUrl']+'_400.png']
+            except:
+                Item['imageUrls'] = None
             Item['isDiscontinued'] = product.get('isDiscontinued')
             Item['isSupplierTemporaryNotAvailable'] = product.get('isSupplierTemporaryNotAvailable')
             Item['sugarContent'] = product.get('sugarContent')
@@ -105,8 +107,13 @@ class Systembolaget1Spider(scrapy.Spider):
             Item['otherSelections'] = product.get('otherSelections')
             Item['color'] = product.get('color')
             Item['scrappedDate'] = now.strftime("%Y-%m-%d %H:%M:%S")
-            Item['store'] = store
-            yield Item
+            Item['storeId'] = store
+            # yield Item
+            yield scrapy.Request(url=f'https://api-extern.systembolaget.se/sb-api-ecommerce/v1/stockbalance/store?ProductId={productId}&StoreId={store}',
+            headers=self.headers,
+            callback=self.stock_details,
+            meta={'item': Item}
+            )
         next_page = json_resp.get('metadata').get('nextPage')
         logging.error("Next Page"+str(next_page))
         if next_page != -1:
@@ -115,3 +122,13 @@ class Systembolaget1Spider(scrapy.Spider):
                 headers=self.headers,
                 callback=self.parse
             )
+    def stock_details(self, response):
+        Item = response.meta['item']
+        try:
+            json_resp = json.loads(response.body)[0]
+            # logging.error(json_resp)
+            Item['shelf'] = json_resp.get('shelf')
+            Item['stock'] = json_resp.get('stock')
+            yield Item
+        except:
+            yield Item
