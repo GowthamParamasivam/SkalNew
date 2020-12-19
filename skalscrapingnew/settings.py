@@ -19,7 +19,7 @@ NEWSPIDER_MODULE = 'skalscrapingnew.spiders'
 #USER_AGENT = 'skalscrapingnew (+http://www.yourdomain.com)'
 
 # Obey robots.txt rules
-ROBOTSTXT_OBEY = True
+# ROBOTSTXT_OBEY = True
 
 # Configure maximum concurrent requests performed by Scrapy (default: 16)
 #CONCURRENT_REQUESTS = 32
@@ -46,15 +46,15 @@ ROBOTSTXT_OBEY = True
 
 # Enable or disable spider middlewares
 # See https://docs.scrapy.org/en/latest/topics/spider-middleware.html
-#SPIDER_MIDDLEWARES = {
+# SPIDER_MIDDLEWARES = {
 #    'skalscrapingnew.middlewares.SkalscrapingnewSpiderMiddleware': 543,
-#}
+# }
 
 # Enable or disable downloader middlewares
 # See https://docs.scrapy.org/en/latest/topics/downloader-middleware.html
-#DOWNLOADER_MIDDLEWARES = {
-#    'skalscrapingnew.middlewares.SkalscrapingnewDownloaderMiddleware': 543,
-#}
+DOWNLOADER_MIDDLEWARES = {
+   'skalscrapingnew.middlewares.SkalscrapingnewDownloaderMiddleware': 543
+}
 
 # Enable or disable extensions
 # See https://docs.scrapy.org/en/latest/topics/extensions.html
@@ -64,9 +64,11 @@ ROBOTSTXT_OBEY = True
 
 # Configure item pipelines
 # See https://docs.scrapy.org/en/latest/topics/item-pipeline.html
-#ITEM_PIPELINES = {
-#    'skalscrapingnew.pipelines.SkalscrapingnewPipeline': 300,
-#}
+ITEM_PIPELINES = {
+   'skalscrapingnew.pipelines.SkalscrapingnewPipeline': 500,
+   'skalscrapingnew.pipelines.MyImagesPipeline': 300
+
+}
 
 # Enable and configure the AutoThrottle extension (disabled by default)
 # See https://docs.scrapy.org/en/latest/topics/autothrottle.html
@@ -88,3 +90,6 @@ ROBOTSTXT_OBEY = True
 #HTTPCACHE_DIR = 'httpcache'
 #HTTPCACHE_IGNORE_HTTP_CODES = []
 #HTTPCACHE_STORAGE = 'scrapy.extensions.httpcache.FilesystemCacheStorage'
+
+# IMAGES_STORE = '/root/SkalScrapingImage'
+IMAGES_STORE = '/home/gowthamparamasivam/python/scrappy/SkalScrapingImage'
