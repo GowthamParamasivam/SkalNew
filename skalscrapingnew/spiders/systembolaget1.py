@@ -29,7 +29,6 @@ class Systembolaget1Spider(scrapy.Spider):
 
     def start_requests(self):
         for store in self.stores:
-            logging.error(store)
             yield scrapy.Request(
                 url=f'https://api-extern.systembolaget.se/sb-api-ecommerce/v1/productsearch/search?size=30&page=1&isEcoFriendlyPackage=false&isInDepotStockForFastDelivery=false&storeId={store}&isInStoreAssortmentSearch=true',
                 headers=self.headers,
@@ -57,8 +56,7 @@ class Systembolaget1Spider(scrapy.Spider):
             Item['restrictedParcelQuantity'] = product.get('restrictedParcelQuantity')
             Item['isOrganic'] = product.get('isOrganic')
             Item['isEthical'] = product.get('isEthical')
-            Item['ethicalLabel'] = product.get(
-                'ethicalLabel')
+            Item['ethicalLabel'] = product.get('ethicalLabel')
             Item['isWebLaunch'] = product.get('isWebLaunch')
             Item['productLaunchDate'] = product.get('productLaunchDate')
             Item['isCompletelyOutOfStock'] = product.get('isCompletelyOutOfStock')
