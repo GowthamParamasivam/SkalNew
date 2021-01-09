@@ -52,7 +52,7 @@ class MyImagesPipeline(ImagesPipeline):
         if isinstance(item,Product):
             try:
                 for image_url in item['imageUrls']:
-                    logging.error(image_url)
+                    # logging.error(image_url)
                     yield scrapy.Request(image_url)
             except ValueError:
                 logging.info("Exception of Value Error happened in Image pipeline")
