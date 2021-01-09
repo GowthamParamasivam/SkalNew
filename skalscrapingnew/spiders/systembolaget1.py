@@ -113,7 +113,7 @@ class Systembolaget1Spider(scrapy.Spider):
             meta={'item': Item}
             )
         next_page = json_resp.get('metadata').get('nextPage')
-        logging.error("Next Page"+str(next_page))
+        # logging.info("Next Page"+str(next_page))
         if next_page != -1:
             yield scrapy.Request(
                 url=f'https://api-extern.systembolaget.se/sb-api-ecommerce/v1/productsearch/search?size=30&page={next_page}&isEcoFriendlyPackage=false&isInDepotStockForFastDelivery=false&storeId={store}&isInStoreAssortmentSearch=true',
