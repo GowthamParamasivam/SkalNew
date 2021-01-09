@@ -16,6 +16,7 @@ class SkalscrapingnewPipeline:
     SCRAPPING_STORES = 'scrapping_stores'
     SCRAPPED_PRODCUTS = 'scrapped_products'
     SCRAPPED_STORES = 'scrapped_stores'
+    ID_FOR_STORES_MONGO = 1
     def open_spider(self,spider):
         self.client = pymongo.MongoClient("mongodb://hello:hello@127.0.0.1:27017/?authSource=admin&authMechanism=SCRAM-SHA-256")
         self.db = self.client['systembolaget']
@@ -23,7 +24,7 @@ class SkalscrapingnewPipeline:
             # Deleting the Store Products collection
             self.db[self.SCRAPPED_PRODCUTS].drop()
             # Getting the Stores to be scrapped
-            stores = self.db[self.SCRAPPING_STORES].find_one({"_id":1})
+            stores = self.db[self.SCRAPPING_STORES].find_one({"_id": self.ID_FOR_STORES_MONGO})
             Systembolaget1Spider.stores = stores['stores']
             if len(Systembolaget1Spider.stores) == 0:
                 raise scrapy.exceptions.CloseSpider('No Store Found To Scrap') 
@@ -32,7 +33,7 @@ class SkalscrapingnewPipeline:
             # Deleting the Store Details collection
             self.db[self.SCRAPPED_STORES].drop()
             # Getting the Stores to be scrapped
-            stores = self.db[self.SCRAPPING_STORES].find_one({"_id":1})
+            stores = self.db[self.SCRAPPING_STORES].find_one({"_id": self.ID_FOR_STORES_MONGO})
             SystembolagetstoreSpider.stores = stores['stores']
             if len(SystembolagetstoreSpider.stores) == 0:
                 raise scrapy.exceptions.CloseSpider('No Store Found To Scrap')
